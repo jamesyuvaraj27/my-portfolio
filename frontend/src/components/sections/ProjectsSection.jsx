@@ -100,7 +100,6 @@ export const ProjectsSection = ({
   ...props
 }) => {
   const displayProjects = projects.slice(0, maxDisplay);
-  const featuredProject = displayProjects[0];
 
   return (
     <Section id="projects" className={cn("relative", className)} {...props}>

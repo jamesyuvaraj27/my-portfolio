@@ -39,11 +39,9 @@ const AdminPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [portfolio, setPortfolio] = useState(null);
   const [activeTab, setActiveTab] = useState("dashboard");
-  const [isSaving, setIsSaving] = useState(false);
-
   // Modal states
-  const [editingItem, setEditingItem] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+  const [_editingItem, setEditingItem] = useState(null);
+  const [_showModal, setShowModal] = useState(false);
 
   // Fetch portfolio data
   useEffect(() => {
@@ -85,7 +83,7 @@ const AdminPage = () => {
     try {
       await api.post("/auth/logout");
       setIsAuthenticated(false);
-    } catch (error) {
+    } catch {
       toast.error("Failed to logout");
     }
   };
@@ -167,7 +165,7 @@ const AdminPage = () => {
                       item={project}
                       columns={["name", "category", "status"]}
                       onEdit={(id) => setEditingItem(id)}
-                      onDelete={(id) => toast("Delete feature coming soon")}
+                      onDelete={() => toast("Delete feature coming soon")}
                     />
                   ))}
                 </div>

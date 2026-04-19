@@ -13,10 +13,10 @@ createRoot(document.getElementById("root")).render(
         position="top-right"
         toastOptions={{
           style: {
-            background: "rgba(17, 24, 39, 0.96)",
-            color: "#e5e7eb",
-            border: "1px solid rgba(255, 255, 255, 0.08)",
-            boxShadow: "0 24px 40px rgba(6, 10, 26, 0.35)",
+            background: "rgba(255, 255, 255, 0.96)",
+            color: "#1F2937",
+            border: "1px solid rgba(209, 213, 219, 0.8)",
+            boxShadow: "0 18px 40px rgba(15, 23, 42, 0.08)",
           },
         }}
       />

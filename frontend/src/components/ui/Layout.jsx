@@ -1,81 +1,55 @@
 import { cn } from "../../lib/utils";
 
-/**
- * Container Component
- * Responsive container with max-width
- */
 export const Container = ({
   children,
-  size = "max",
   className = "",
+  size = "max",
   ...props
 }) => {
   const sizes = {
     sm: "max-w-2xl",
     md: "max-w-4xl",
     lg: "max-w-6xl",
-    xl: "max-w-7xl",
-    max: "max-w-7xl",
+    xl: "max-w-[1200px]",
+    max: "max-w-[1200px]",
     full: "w-full",
   };
 
   return (
-    <div
-      className={cn(
-        "mx-auto w-full px-4 sm:px-6 lg:px-8",
-        sizes[size],
-        className
-      )}
-      {...props}
-    >
+    <div className={cn("mx-auto w-full px-4 sm:px-6 lg:px-8", sizes[size], className)} {...props}>
       {children}
     </div>
   );
 };
 
-/**
- * Section Wrapper Component
- */
 export const Section = ({
   children,
-  id,
   className = "",
+  id,
   padding = "lg",
   space = true,
   ...props
 }) => {
   const paddings = {
-    xs: "py-8 sm:py-12",
-    sm: "py-12 sm:py-16",
-    md: "py-16 sm:py-20",
-    lg: "py-20 sm:py-24",
-    xl: "py-24 sm:py-32",
+    xs: "py-8",
+    sm: "py-12",
+    md: "py-16",
+    lg: "py-20",
+    xl: "py-24",
   };
 
   return (
-    <section
-      id={id}
-      className={cn(
-        "relative w-full",
-        paddings[padding],
-        space && "space-y-12",
-        className
-      )}
-      {...props}
-    >
+    <section id={id} className={cn("relative w-full", paddings[padding], space && "space-y-10", className)} {...props}>
       <Container>{children}</Container>
     </section>
   );
 };
 
-/**
- * Grid Component
- */
 export const Grid = ({
   children,
-  cols = 3,
-  gap = "lg",
   className = "",
+  cols = 3,
+  gap = "md",
   responsive = true,
   ...props
 }) => {
@@ -87,38 +61,35 @@ export const Grid = ({
     6: "grid-cols-6",
   };
 
+  const responsiveCols = {
+    1: "grid-cols-1",
+    2: "grid-cols-1 md:grid-cols-2",
+    3: "grid-cols-1 md:grid-cols-2 xl:grid-cols-3",
+    4: "grid-cols-1 sm:grid-cols-2 xl:grid-cols-4",
+    6: "grid-cols-2 md:grid-cols-3 xl:grid-cols-6",
+  };
+
   const gapSize = {
-    xs: "gap-4",
-    sm: "gap-6",
-    md: "gap-8",
-    lg: "gap-10",
-    xl: "gap-12",
+    xs: "gap-2",
+    sm: "gap-4",
+    md: "gap-6",
+    lg: "gap-8",
+    xl: "gap-10",
   };
 
   return (
-    <div
-      className={cn(
-        "grid",
-        gapSize[gap],
-        responsive ? "grid-cols-1 md:grid-cols-2 lg:" + colsSize[cols] : colsSize[cols],
-        className
-      )}
-      {...props}
-    >
+    <div className={cn("grid", gapSize[gap], responsive ? responsiveCols[cols] : colsSize[cols], className)} {...props}>
       {children}
     </div>
   );
 };
 
-/**
- * Stack Component
- */
 export const Stack = ({
   children,
-  direction = "vertical",
-  gap = "md",
   align = "start",
   className = "",
+  direction = "vertical",
+  gap = "md",
   ...props
 }) => {
   const directions = {
@@ -144,116 +115,69 @@ export const Stack = ({
   };
 
   return (
-    <div
-      className={cn(
-        directions[direction],
-        gaps[gap],
-        aligns[align],
-        className
-      )}
-      {...props}
-    >
+    <div className={cn(directions[direction], gaps[gap], aligns[align], className)} {...props}>
       {children}
     </div>
   );
 };
 
-/**
- * Skeleton Loader Component
- */
-export const Skeleton = ({
-  width = "100%",
-  height = "100%",
-  rounded = "md",
-  className = "",
-  ...props
-}) => {
+export const Skeleton = ({ className = "", height = "100%", rounded = "md", width = "100%", ...props }) => {
   const roundedSize = {
-    xs: "rounded-xs",
-    sm: "rounded-sm",
-    md: "rounded-md",
-    lg: "rounded-lg",
-    xl: "rounded-xl",
-    "2xl": "rounded-2xl",
+    sm: "rounded-lg",
+    md: "rounded-xl",
+    lg: "rounded-2xl",
+    xl: "rounded-[20px]",
     full: "rounded-full",
   };
 
   return (
     <div
-      className={cn(
-        "skeleton-base animate-pulse",
-        roundedSize[rounded],
-        className
-      )}
+      className={cn("skeleton", roundedSize[rounded], className)}
       style={{ width, height }}
       {...props}
     />
   );
 };
 
-/**
- * Skeleton Card Component
- */
-export const SkeletonCard = ({ count = 3 }) => {
-  return (
-    <div className="space-y-6">
-      {Array.from({ length: count }).map((_, i) => (
-        <div key={i} className="glass-panel-md p-6 space-y-4">
-          <Skeleton height={24} width="60%" rounded="md" />
-          <Skeleton height={16} width="100%" rounded="sm" />
-          <Skeleton height={16} width="85%" rounded="sm" />
-          <div className="flex gap-2 pt-2">
-            <Skeleton height={32} width={80} rounded="lg" />
-            <Skeleton height={32} width={100} rounded="lg" />
-          </div>
+export const SkeletonCard = ({ className = "", count = 3 }) => (
+  <div className={cn("space-y-4", className)}>
+    {Array.from({ length: count }).map((_, index) => (
+      <div key={index} className="surface-card p-6">
+        <Skeleton height={180} rounded="xl" />
+        <div className="mt-5 space-y-3">
+          <Skeleton height={22} width="65%" />
+          <Skeleton height={14} />
+          <Skeleton height={14} width="82%" />
         </div>
-      ))}
-    </div>
-  );
-};
+      </div>
+    ))}
+  </div>
+);
 
-/**
- * Progress Bar Component
- */
 export const ProgressBar = ({
-  value = 0,
-  max = 100,
-  showLabel = true,
   animated = true,
   className = "",
+  max = 100,
+  showLabel = true,
+  value = 0,
   ...props
 }) => {
-  const percentage = (value / max) * 100;
+  const percentage = max ? Math.min((value / max) * 100, 100) : 0;
 
   return (
     <div className={cn("space-y-2", className)} {...props}>
-      <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden border border-white/10">
+      <div className="h-2 w-full rounded-full bg-secondary-200">
         <div
-          className={cn(
-            "h-full bg-gradient-to-r from-primary-500 to-secondary-500 transition-all duration-500 rounded-full",
-            animated && "shadow-glow"
-          )}
+          className={cn("h-full rounded-full bg-primary-500 transition-all", animated && "duration-300")}
           style={{ width: `${percentage}%` }}
         />
       </div>
-      {showLabel && (
-        <span className="text-xs font-semibold text-text-muted">
-          {Math.round(percentage)}%
-        </span>
-      )}
+      {showLabel ? <span className="text-xs font-medium text-text-secondary">{Math.round(percentage)}%</span> : null}
     </div>
   );
 };
 
-/**
- * Divider Component
- */
-export const Divider = ({
-  direction = "horizontal",
-  spacing = "md",
-  className = "",
-  ...props
-}) => {
+export const Divider = ({ className = "", direction = "horizontal", spacing = "md", ...props }) => {
   const spacings = {
     xs: "my-2",
     sm: "my-3",
@@ -265,8 +189,8 @@ export const Divider = ({
   return (
     <div
       className={cn(
-        "w-full border-white/10",
-        direction === "horizontal" ? "border-t" : "border-r",
+        "border-secondary-300",
+        direction === "horizontal" ? "w-full border-t" : "h-full border-r",
         spacings[spacing],
         className
       )}

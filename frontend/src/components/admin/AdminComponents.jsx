@@ -301,7 +301,8 @@ export const AdminUploadArea = ({
         "border-2 border-dashed rounded-xl p-8 text-center transition-all cursor-pointer",
         isDragActive
           ? "border-primary-500 bg-primary-500/10"
-          : "border-white/10 bg-white/5 hover:border-primary-500/50"
+          : "border-white/10 bg-white/5 hover:border-primary-500/50",
+        className
       )}
       {...props}
     >

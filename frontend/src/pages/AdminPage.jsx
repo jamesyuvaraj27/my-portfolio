@@ -64,7 +64,7 @@ const EMPTY_PHOTO = {
   alt: "",
   featured: false,
 };
-const EMPTY_TESTIMONIAL = { name: "", role: "", message: "", rating: 5 };
+const EMPTY_TESTIMONIAL = { name: "", role: "", message: "", rating: "" };
 
 const emptyForms = {
   project: EMPTY_PROJECT,
@@ -275,7 +275,7 @@ const AdminPage = () => {
                       name: item.name || "",
                       role: item.role || "",
                       message: item.message || "",
-                      rating: item.rating || 5,
+                      rating: item.rating ?? "",
                     },
     }));
   };
@@ -533,7 +533,7 @@ const AdminPage = () => {
         description="Secure admin dashboard for managing portfolio uploads, projects, skills, experience, testimonials, certifications, and messages."
       />
 
-      <div className="page-shell min-h-screen px-4 py-8 sm:px-6 lg:px-8">
+      <div className="admin-theme page-shell min-h-screen px-4 py-8 sm:px-6 lg:px-8">
         {loadingAuth ? (
           <LoadingCard label="Loading admin workspace..." />
         ) : !user ? (
@@ -1009,7 +1009,7 @@ const PhotoEditor = ({ form, submitting, isEditing, updateForm, onSubmit, onCanc
       return () => {
         try {
           URL.revokeObjectURL(url);
-        } catch (e) {
+        } catch {
           // ignore
         }
       };
