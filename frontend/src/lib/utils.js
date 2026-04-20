@@ -1,3 +1,5 @@
+import { API_BASE_URL } from "./axios";
+
 export const cn = (...classes) => classes.filter(Boolean).join(" ");
 
 export const splitCsv = (value) =>
@@ -21,9 +23,7 @@ export function mediaUrl(value) {
     return value;
   }
 
-  const apiBase =
-    import.meta.env.VITE_API_BASE_URL ||
-    (import.meta.env.MODE === "development" ? "http://localhost:5001/api" : "/api");
+  const apiBase = API_BASE_URL;
 
   if (!apiBase.startsWith("http")) {
     return value;
@@ -33,9 +33,7 @@ export function mediaUrl(value) {
 }
 
 export function apiUrl(path) {
-  const apiBase =
-    import.meta.env.VITE_API_BASE_URL ||
-    (import.meta.env.MODE === "development" ? "http://localhost:5001/api" : "/api");
+  const apiBase = API_BASE_URL;
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
 
   return `${apiBase.replace(/\/$/, "")}${normalizedPath}`;

@@ -107,8 +107,8 @@ export const parseCookieHeader = (cookieHeader) =>
 
 export const buildAuthCookieOptions = () => ({
   httpOnly: true,
-  sameSite: "lax",
   secure: process.env.NODE_ENV === "production",
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
   maxAge: TOKEN_TTL_MS,
   path: "/",
 });

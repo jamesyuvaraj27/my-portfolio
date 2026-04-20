@@ -14,33 +14,37 @@ import contentRoutes from "./routes/contentRoutes.js";
 const app = express();
 const PORT = process.env.PORT || 5001;
 
-// 🌐 Allowed origins (Local + Production)
+const parseOrigins = (value) =>
+  String(value || "")
+    .split(",")
+    .map((origin) => origin.trim().replace(/\/$/, ""))
+    .filter(Boolean);
+
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://your-frontend.vercel.app", // 🔁 replace after deployment
+  "http://127.0.0.1:5173",
+  ...parseOrigins(process.env.CLIENT_URL),
+  ...parseOrigins(process.env.CORS_ORIGINS),
 ];
 
-// ✅ CORS (works for both local + deployed)
 app.use(
   cors({
     origin: function (origin, callback) {
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        callback(new Error("CORS not allowed"));
+        callback(new Error(`CORS not allowed for origin: ${origin}`));
       }
     },
     credentials: true,
   })
 );
 
-// ⚙️ Middleware
 app.set("trust proxy", 1);
 app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(rateLimiter);
 
-// 📁 Static uploads (temporary storage)
 app.use(
   "/uploads",
   express.static(uploadRoot, {
@@ -49,7 +53,6 @@ app.use(
   })
 );
 
-// ❤️ Health check route
 app.get("/api/health", (req, res) => {
   res.json({
     status: "ok",
@@ -58,42 +61,36 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-// 🔌 Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/content", contentRoutes);
 app.use("/api/admin", adminRoutes);
 
-// ❌ NOT FOUND handler
 app.use(notFoundHandler);
-
-// ❌ ERROR handler
 app.use(errorHandler);
 
-// 🚀 Start server safely
 const startServer = (port) => {
   const server = app.listen(port, () => {
-    console.log(`🚀 AstraDev server running on port ${port}`);
+    console.log(`AstraDev server running on port ${port}`);
   });
 
   server.on("error", (error) => {
-    if (error.code === "EADDRINUSE") {
-      console.warn(`⚠️ Port ${port} in use. Trying ${port + 1}...`);
+    if (error.code === "EADDRINUSE" && process.env.NODE_ENV !== "production") {
+      console.warn(`Port ${port} in use. Trying ${port + 1}...`);
       startServer(port + 1);
       return;
     }
 
-    console.error("❌ Server startup error:", error);
+    console.error("Server startup error:", error);
     process.exit(1);
   });
 };
 
-// 🔗 Connect DB and start
 connectDB()
   .then(() => {
-    console.log("✅ MongoDB connected");
+    console.log("MongoDB connected");
     startServer(Number(PORT));
   })
   .catch((error) => {
-    console.error("❌ Failed to start server:", error);
+    console.error("Failed to start server:", error);
     process.exit(1);
   });

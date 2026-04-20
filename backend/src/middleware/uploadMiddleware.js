@@ -7,7 +7,9 @@ import multer from "multer";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export const uploadRoot = path.resolve(__dirname, "../../uploads");
+export const uploadRoot = process.env.UPLOAD_DIR
+  ? path.resolve(process.env.UPLOAD_DIR)
+  : path.resolve(__dirname, "../../uploads");
 
 const ensureDirectory = (directory) => {
   if (!fs.existsSync(directory)) {
