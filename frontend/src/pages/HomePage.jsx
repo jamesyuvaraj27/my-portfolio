@@ -26,7 +26,7 @@ import toast from "react-hot-toast";
 
 import AnimatedSection from "../components/AnimatedSection";
 import MagneticButton from "../components/MagneticButton";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/Navbar";
 import Seo from "../components/Seo";
 import { Avatar, Modal } from "../components/ui";
 import api from "../lib/axios";
