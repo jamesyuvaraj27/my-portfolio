@@ -43,7 +43,7 @@ Required Render environment variables:
 NODE_ENV=production
 MONGO_URI=mongodb+srv://...
 JWT_SECRET=use-a-long-random-secret
-CORS_ORIGINS=https://your-frontend.vercel.app
+CORS_ORIGINS=https://my-portfolio-five-tau-30.vercel.app
 ```
 
 Optional Render environment variables:
